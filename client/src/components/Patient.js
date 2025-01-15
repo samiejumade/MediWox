@@ -147,7 +147,7 @@ const Patient = ({mediChain, account, ethValue}) => {
     await setShowRecordModal(true);
   }
   
-// eslint-disable-next-line react-hooks/exhaustive-deps
+ 
   useEffect(() => {
     if(account === "") return window.location.href = '/login'
     if(!patient) getPatientData()

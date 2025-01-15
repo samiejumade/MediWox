@@ -76,7 +76,7 @@ const Register = ({mediChain, ipfs, connectWallet, token, account, setToken, set
         }
     };
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     useEffect(() => {
         var t = localStorage.getItem('token')
         var a = localStorage.getItem('account')

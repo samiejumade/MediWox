@@ -5,6 +5,7 @@
   "scripts": {
     "client:install": "npm install --prefix client",
     "client:start": "npm start --prefix client",
+    "client:build": "npm build --prefix client",
     "truffle:compile": "npm run compile --prefix truffle",
     "truffle:install": "npm install --prefix truffle",
     "truffle:migrate": "npm run migrate --prefix truffle",

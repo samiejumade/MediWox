@@ -135,7 +135,7 @@ const Insurer = ({mediChain, account, ethValue}) => {
         }
     }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
     useEffect(() => {
         if(account === "") return window.location.href = '/login'
         if(!insurer) getInsurerData()
