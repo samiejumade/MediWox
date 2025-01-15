@@ -109,3 +109,13 @@ npm run client:start
 7. Now, obtain the private keys of some of the accounts from Ganache and import the accounts into Metamask wallet.
 
 8. You're ready to go. Visit [http://localhost:3000/](http://localhost:3000/) to check out MediChain
+
+////////////////////////Sepolia contract deployment details //////////////////////////////////////
+
+transaction hash:    0xb7085d7788f75df0f4a1481509d05add24f6e2a50b0042fa79e8f5363e408984
+   > Blocks: 3            Seconds: 29
+   > contract address:    0x1FAE98AfD4D608f88fEdEE95774d93f637ABa8Ab
+   > block number:        7495812
+   > block timestamp:     1736931504
+   > account:             0x0bb6A0a5b8A05a98D0dc50838716a59Ca4b57901
+   > balance:             5.87297320691916718

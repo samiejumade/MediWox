@@ -42,7 +42,8 @@
  */
 
 require('dotenv').config();
-const { REACT_APP_MNEMONIC, REACT_APP_INFURA_PROJECT_ID } = process.env;
+// const { INFURA_PROJECT_ID, PRIVATE_KEY } = process.env;
+
 
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 
@@ -83,13 +84,33 @@ module.exports = {
     //
     // Useful for deploying to a public network.
     // Note: It's important to wrap the provider as a function to ensure truffle uses a new provider every time.
+    // sepolia: {
+    //   provider: () => new HDWalletProvider(
+    //     REACT_APP_PRIVATE_KEY, 
+    //     `https://sepolia.infura.io/v3/${REACT_APP_INFURA_PROJECT_ID}`
+    //   ),
+    //   network_id: 11155111,       // Sepolia's id
+    //   confirmations: 2,    // # of confirmations to wait between deployments. (default: 0)
+    //   timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
+    //   skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
+    // },
+
     sepolia: {
-      provider: () => new HDWalletProvider(REACT_APP_MNEMONIC, `https://sepolia.infura.io/v3/${REACT_APP_INFURA_PROJECT_ID}`),
-      network_id: 11155111,       // Sepolia's id
-      confirmations: 2,    // # of confirmations to wait between deployments. (default: 0)
-      timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
-      skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
+      provider: () => {
+        return new HDWalletProvider({
+          privateKeys: ['2b478da634622551003406708039523aba35822b869de6c0982e06641cc7a70b'],
+          providerOrUrl: 'https://sepolia.infura.io/v3/ef01014d6bf84e7c93586cd070d990af',
+          pollingInterval: 8000
+        });
+      },
+      network_id: 11155111,
+      gas: 5500000,
+      confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: true,
+      networkCheckTimeout: 1000000
     },
+
     //
     // Useful for private networks
     // private: {
