@@ -34,7 +34,7 @@ const Login = ({mediChain, connectWallet, token, account, setToken, setAccount})
         setToken('');
         setAccount('');
     }
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         if(mediChain){   
             var t = localStorage.getItem('token')

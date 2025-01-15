@@ -202,7 +202,7 @@ const Doctor = ({ipfs, mediChain, account}) => {
   }
 
 
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if(account === "") return window.location.href = '/login'
     if(!doctor) getDoctorData()

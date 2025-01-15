@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 const Dashboard = ({mediChain, token, account, ipfs}) => {
     const [ethValue, setEthValue] = useState(0);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         fetch('https://api.coinbase.com/v2/exchange-rates?currency=ETH')
             .then(res => res.json())

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { Buffer } from 'buffer';
 
 const Register = ({mediChain, ipfs, connectWallet, token, account, setToken, setAccount}) => {
     const [designation, setDesignation] = useState("1");
@@ -76,6 +75,8 @@ const Register = ({mediChain, ipfs, connectWallet, token, account, setToken, set
             });
         }
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         var t = localStorage.getItem('token')
         var a = localStorage.getItem('account')

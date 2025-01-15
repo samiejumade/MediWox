@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import Web3 from 'web3';
 import { create } from 'ipfs-http-client';
-import { Buffer } from 'buffer';
 import MediChain from './contracts/MediChain.json';
 import Dashboard from './components/Dashboard.js';
 import Home from './components/Home.js';
