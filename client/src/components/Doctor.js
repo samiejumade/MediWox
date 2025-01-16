@@ -8,7 +8,7 @@ import { Buffer } from 'buffer';
 import { Link } from 'react-router-dom'
 
 
-const Doctor = ({ipfs, mediChain, account}) => {
+const Doctor = ({ipfs, mediWox, account}) => {
   const [doctor, setDoctor] = useState(null);
   const [patient, setPatient] = useState(null);
   const [patientRecord, setPatientRecord] = useState(null);
@@ -22,26 +22,26 @@ const Doctor = ({ipfs, mediChain, account}) => {
   const [transactionsList, setTransactionsList] = useState([]);
 
   const getDoctorData = async () => {
-    var doctor = await mediChain.methods.doctorInfo(account).call();
+    var doctor = await mediWox.methods.doctorInfo(account).call();
     setDoctor(doctor);
   }
   const getPatientAccessList = async () => {
-    var pat = await mediChain.methods.getDoctorPatientList(account).call();
+    var pat = await mediWox.methods.getDoctorPatientList(account).call();
     let pt = []
     for(let i=0; i<pat.length; i++){
-      let patient = await mediChain.methods.patientInfo(pat[i]).call();
+      let patient = await mediWox.methods.patientInfo(pat[i]).call();
       patient = { ...patient, account:pat[i] }
       pt = [...pt, patient]
     }
     setPatList(pt);
   }
   const getTransactionsList = async () => {
-    var transactionsIdList = await mediChain.methods.getDoctorTransactions(account).call();
+    var transactionsIdList = await mediWox.methods.getDoctorTransactions(account).call();
     let tr = [];
     for(let i=transactionsIdList.length-1; i>=0; i--){
-        let transaction = await mediChain.methods.transactions(transactionsIdList[i]).call();
-        let sender = await mediChain.methods.patientInfo(transaction.sender).call();
-        if(!sender.exists) sender = await mediChain.methods.insurerInfo(transaction.sender).call();
+        let transaction = await mediWox.methods.transactions(transactionsIdList[i]).call();
+        let sender = await mediWox.methods.patientInfo(transaction.sender).call();
+        if(!sender.exists) sender = await mediWox.methods.insurerInfo(transaction.sender).call();
         transaction = {...transaction, id: transactionsIdList[i], senderEmail: sender.email}
         tr = [...tr, transaction];
     }
@@ -118,7 +118,7 @@ const Doctor = ({ipfs, mediChain, account}) => {
   //       console.log(error);
   //       return;
   //     }else{
-  //       mediChain.methods.insuranceClaimRequest(patient.account, result.path, charges).send({from: account}).on('transactionHash', (hash) => {
+  //       mediWox.methods.insuranceClaimRequest(patient.account, result.path, charges).send({from: account}).on('transactionHash', (hash) => {
   //         return window.location.href = '/login'
   //       })
   //     }
@@ -193,7 +193,7 @@ const Doctor = ({ipfs, mediChain, account}) => {
       }
 
       const result = await response.json();
-      mediChain.methods.insuranceClaimRequest(patient.account, result.IpfsHash, charges).send({from: account}).on('transactionHash', (hash) => {
+      mediWox.methods.insuranceClaimRequest(patient.account, result.IpfsHash, charges).send({from: account}).on('transactionHash', (hash) => {
         return window.location.href = '/login'
       })
     } catch (error) {

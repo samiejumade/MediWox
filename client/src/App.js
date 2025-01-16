@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Web3 from 'web3';
 import { create } from 'ipfs-http-client';
-import MediChain from './contracts/MediChain.json';
+import MediWox from './contracts/MediWox.json';
 import Dashboard from './components/Dashboard.js';
 import Home from './components/Home.js';
 import Login from './components/Login.js';
@@ -36,7 +36,7 @@ const ipfs = create({
 function App() {
   const [account, setAccount] = useState('');
   const [token, setToken] = useState('');
-  const [mediChain, setMediChain] = useState(null);
+  const [mediWox, setMediWox] = useState(null);
 
   const connectWallet = async () => {
     if (window.ethereum) {
@@ -56,11 +56,11 @@ function App() {
   const getContractInstance = async () => {
     const web3 = new Web3(window.ethereum || Web3.givenProvider || 'http://localhost:7545')
     const networkId = await web3.eth.net.getId()
-    const networkData = MediChain.networks[networkId]
+    const networkData = MediWox.networks[networkId]
     if(networkData){
-      const mediChain = new web3.eth.Contract(MediChain.abi, networkData.address)
-      setMediChain(mediChain)
-      console.log(await mediChain.methods.name().call())
+      const mediWox = new web3.eth.Contract(MediWox.abi, networkData.address)
+      setMediWox(mediWox)
+      console.log(await mediWox.methods.name().call())
     }else{
       alert('Smart contract not deployed on this network')
     }
@@ -75,9 +75,9 @@ function App() {
       <SiteNavbar token={token} account={account} setAccount={setAccount} setToken={setToken}/>
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/login' element={<Login mediChain={mediChain} token={token} setToken={setToken} setAccount={setAccount} connectWallet={connectWallet} account={account}/>} />
-        <Route path='/dashboard' element={<Dashboard mediChain={mediChain} token={token} account={account} ipfs={ipfs}/>} />
-        <Route path='/register' element={<Register mediChain={mediChain} ipfs={ipfs} token={token} setToken={setToken} setAccount={setAccount} connectWallet={connectWallet} account={account} />} />
+        <Route path='/login' element={<Login mediWox={mediWox} token={token} setToken={setToken} setAccount={setAccount} connectWallet={connectWallet} account={account}/>} />
+        <Route path='/dashboard' element={<Dashboard mediWox={mediWox} token={token} account={account} ipfs={ipfs}/>} />
+        <Route path='/register' element={<Register mediWox={mediWox} ipfs={ipfs} token={token} setToken={setToken} setAccount={setAccount} connectWallet={connectWallet} account={account} />} />
       </Routes>
       <Footer/>
     </Router>

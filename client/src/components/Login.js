@@ -2,27 +2,27 @@ import { useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 
-const Login = ({mediChain, connectWallet, token, account, setToken, setAccount}) => {
+const Login = ({mediWox, connectWallet, token, account, setToken, setAccount}) => {
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if(account==="") return;
-        var res = await mediChain.methods.patientInfo(account).call()
+        var res = await mediWox.methods.patientInfo(account).call()
         if(res.exists){
             setToken('1');
             localStorage.setItem('token', '1');
             localStorage.setItem('account', account);
             return navigate('/dashboard')
         }
-        res = await mediChain.methods.doctorInfo(account).call()
+        res = await mediWox.methods.doctorInfo(account).call()
         if(res.exists){
             setToken('2');
             localStorage.setItem('token', '2');
             localStorage.setItem('account', account);
             return navigate('/dashboard')
         }
-        res = await mediChain.methods.insurerInfo(account).call()
+        res = await mediWox.methods.insurerInfo(account).call()
         if(res.exists){
             setToken('3');
             localStorage.setItem('token', '3');
@@ -36,14 +36,14 @@ const Login = ({mediChain, connectWallet, token, account, setToken, setAccount})
     }
      
     useEffect(() => {
-        if(mediChain){   
+        if(mediWox){   
             var t = localStorage.getItem('token')
             var a = localStorage.getItem('account')
             t = t ? t : ""
             a = a ? a : ""
             if((t!=="" || a!=="") && (a===account || account==='')){
                 if(t==="1"){
-                    mediChain.methods.patientInfo(a).call().then((res) => {
+                    mediWox.methods.patientInfo(a).call().then((res) => {
                         if(res.exists){
                             setToken(t);
                             setAccount(a);            
@@ -56,7 +56,7 @@ const Login = ({mediChain, connectWallet, token, account, setToken, setAccount})
                         }
                     })
                 }else if(t==="2"){
-                    mediChain.methods.doctorInfo(a).call().then((res) => {
+                    mediWox.methods.doctorInfo(a).call().then((res) => {
                         if(res.exists){
                             setToken(t);
                             setAccount(a);
@@ -69,7 +69,7 @@ const Login = ({mediChain, connectWallet, token, account, setToken, setAccount})
                         }
                     })
                 }else if(t==="3"){
-                    mediChain.methods.insurerInfo(a).call().then((res) => {
+                    mediWox.methods.insurerInfo(a).call().then((res) => {
                         if(res.exists){
                             setToken(t);
                             setAccount(a);
@@ -84,7 +84,7 @@ const Login = ({mediChain, connectWallet, token, account, setToken, setAccount})
                 }
             }
         }
-    }, [mediChain])
+    }, [mediWox])
 
     return (
         <div className='login'>

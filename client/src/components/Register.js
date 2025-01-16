@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 
-const Register = ({mediChain, ipfs, connectWallet, token, account, setToken, setAccount}) => {
+const Register = ({mediWox, ipfs, connectWallet, token, account, setToken, setAccount}) => {
     const [designation, setDesignation] = useState("1");
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -22,13 +22,13 @@ const Register = ({mediChain, ipfs, connectWallet, token, account, setToken, set
     //                 console.log(error);
     //                 return;
     //             }else{
-    //                 mediChain.methods.register(name, age, parseInt(designation), email, result.path).send({from: account}).on('transactionHash', async (hash) => {
+    //                 mediWox.methods.register(name, age, parseInt(designation), email, result.path).send({from: account}).on('transactionHash', async (hash) => {
     //                     window.location.href = '/login'
     //                 })
     //             }
     //         })
     //     }else if(account!==""){
-    //         mediChain.methods.register(name, 0, parseInt(designation), email, "").send({from: account}).on('transactionHash', async (hash) => {
+    //         mediWox.methods.register(name, 0, parseInt(designation), email, "").send({from: account}).on('transactionHash', async (hash) => {
     //             window.location.href = '/login'
     //         })
     //     }
@@ -52,8 +52,8 @@ const Register = ({mediChain, ipfs, connectWallet, token, account, setToken, set
                 const response = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
                     method: 'POST',
                     headers: {
-                        'pinata_api_key': 'ecc51856aa2be3341c63',
-                        'pinata_secret_api_key': '9b5b368577f5e043b81dd6383314834fbd8e2404760fc5dc0a0791deba489342'
+                        'pinata_api_key': `${process.env.REACT_APP_PINATA_API_KEY}`,
+                        'pinata_secret_api_key': `${process.env.REACT_APP_PINATA_API_SECRET}`
                     },
                     body: formData
                 });
@@ -63,14 +63,14 @@ const Register = ({mediChain, ipfs, connectWallet, token, account, setToken, set
                 }
     
                 const result = await response.json();
-                mediChain.methods.register(name, age, parseInt(designation), email, result.IpfsHash).send({ from: account }).on('transactionHash', async (hash) => {
+                mediWox.methods.register(name, age, parseInt(designation), email, result.IpfsHash).send({ from: account }).on('transactionHash', async (hash) => {
                     window.location.href = '/login';
                 });
             } catch (error) {
                 console.error('Error uploading to Pinata:', error);
             }
         } else if (account !== "") {
-            mediChain.methods.register(name, 0, parseInt(designation), email, "").send({ from: account }).on('transactionHash', async (hash) => {
+            mediWox.methods.register(name, 0, parseInt(designation), email, "").send({ from: account }).on('transactionHash', async (hash) => {
                 window.location.href = '/login';
             });
         }

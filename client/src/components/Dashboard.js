@@ -3,7 +3,7 @@ import Patient from "./Patient.js"
 import Insurer from "./Insurer.js"
 import { useEffect, useState } from "react"
 
-const Dashboard = ({mediChain, token, account, ipfs}) => {
+const Dashboard = ({mediWox, token, account, ipfs}) => {
     const [ethValue, setEthValue] = useState(0);
 
      
@@ -16,7 +16,7 @@ const Dashboard = ({mediChain, token, account, ipfs}) => {
 
     return (
         <div className="dash">
-            {token==="1" ? <Patient ipfs={ipfs} ethValue={ethValue} mediChain={mediChain} account={account} /> : token==="2" ? <Doctor ipfs={ipfs} mediChain={mediChain} account={account} /> : token==="3" ? <Insurer ipfs={ipfs} ethValue={ethValue} mediChain={mediChain} account={account} /> : <></>}
+            {token==="1" ? <Patient ipfs={ipfs} ethValue={ethValue} mediWox={mediWox} account={account} /> : token==="2" ? <Doctor ipfs={ipfs} mediWox={mediWox} account={account} /> : token==="3" ? <Insurer ipfs={ipfs} ethValue={ethValue} mediWox={mediWox} account={account} /> : <></>}
         </div>
     )
 }

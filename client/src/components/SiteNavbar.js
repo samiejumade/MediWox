@@ -16,7 +16,7 @@ const SiteNavbar = ({token, account, setAccount, setToken}) => {
     return (
         <Navbar collapseOnSelect expand="md" variant="dark" bg='coolColor' fixed="top" className="site-navbar">
             <Container>
-                <Navbar.Brand as={Link} to="/"><img className='ml-2' height="40" src={logo} alt="MediChain Navigation Logo" /></Navbar.Brand>
+                <Navbar.Brand as={Link} to="/"><img className='ml-2' height="40" src={logo} alt="MediWox Navigation Logo" /></Navbar.Brand>
                 <Nav justify>
                     { token!=='' && account!=="" ? 
                         <>

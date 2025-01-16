@@ -1,19 +1,19 @@
-const MediChain = artifacts.require("MediChain");
+const MediWox = artifacts.require("MediWox");
 
 require('chai')
     .use(require('chai-as-promised'))
     .should()
 
-contract('MediChain', ([deployer, patientOne, patientTwo, doctorOne, doctorTwo, insurerOne, insurerTwo]) => {
-    let mediChain
+contract('MediWox', ([deployer, patientOne, patientTwo, doctorOne, doctorTwo, insurerOne, insurerTwo]) => {
+    let mediWox
 
     before(async () => {
-        mediChain = await MediChain.deployed()
+        mediWox = await MediWox.deployed()
     })
 
     describe('deployment', async () => {
         it('deploys successfully', async () => {
-            const address = await mediChain.address
+            const address = await mediWox.address
             assert.notEqual(address, 0x0)
             assert.notEqual(address, '')
             assert.notEqual(address, null)
@@ -21,8 +21,8 @@ contract('MediChain', ([deployer, patientOne, patientTwo, doctorOne, doctorTwo, 
         })
     
         it('has a name', async () => {
-            const name = await mediChain.name()
-            assert.equal(name, 'mediChain')
+            const name = await mediWox.name()
+            assert.equal(name, 'mediWox')
         })
     })
 
@@ -34,7 +34,7 @@ contract('MediChain', ([deployer, patientOne, patientTwo, doctorOne, doctorTwo, 
 
 
         before(async () => {
-            result = await mediChain.add_agent(name, age, 0, hash)
+            result = await mediWox.add_agent(name, age, 0, hash)
             
         })
 

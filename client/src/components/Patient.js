@@ -7,7 +7,7 @@ import Modal from 'react-bootstrap/Modal'
 import { Link } from 'react-router-dom'
 import Web3 from 'web3'
 
-const Patient = ({mediChain, account, ethValue}) => {
+const Patient = ({mediWox, account, ethValue}) => {
   const [patient, setPatient] = useState(null);
   const [docEmail, setDocEmail] = useState("");
   const [docList, setDocList] = useState([]);
@@ -21,44 +21,44 @@ const Patient = ({mediChain, account, ethValue}) => {
   const [patientRecord, setPatientRecord] = useState(null);
 
   const getPatientData = async () => {
-      var patient = await mediChain.methods.patientInfo(account).call();
+      var patient = await mediWox.methods.patientInfo(account).call();
       setPatient(patient);
   }
 
   const giveAccess = (e) => {
     e.preventDefault();
-    mediChain.methods.permitAccess(docEmail).send({from: account}).on('transactionHash', (hash) => {
+    mediWox.methods.permitAccess(docEmail).send({from: account}).on('transactionHash', (hash) => {
       return window.location.href = '/login'
     })
   }
 
   const revokeAccess = async (email) => {
-    var addr = await mediChain.methods.emailToAddress(email).call();
-    mediChain.methods.revokeAccess(addr).send({from: account}).on('transactionHash', (hash) => {
+    var addr = await mediWox.methods.emailToAddress(email).call();
+    mediWox.methods.revokeAccess(addr).send({from: account}).on('transactionHash', (hash) => {
       return window.location.href = '/login';
     });
   }
 
   const getDoctorAccessList = async () => {
-    var doc = await mediChain.methods.getPatientDoctorList(account).call();
+    var doc = await mediWox.methods.getPatientDoctorList(account).call();
     let dt = [];
     for(let i=0; i<doc.length; i++){
-      let doctor = await mediChain.methods.doctorInfo(doc[i]).call();
+      let doctor = await mediWox.methods.doctorInfo(doc[i]).call();
       dt = [...dt, doctor]
     }
     setDocList(dt)
   }
 
   const getInsurer = async () => {
-    var insurer = await mediChain.methods.insurerInfo(patient.policy.insurer).call();
+    var insurer = await mediWox.methods.insurerInfo(patient.policy.insurer).call();
     setInsurer(insurer)
   }
 
   const getInsurerList = async () => {
-    var ins = await mediChain.methods.getAllInsurersAddress().call();
+    var ins = await mediWox.methods.getAllInsurersAddress().call();
     let it = [];
     for(let i=0; i<ins.length; i++){
-      let insurer = await mediChain.methods.insurerInfo(ins[i]).call();
+      let insurer = await mediWox.methods.insurerInfo(ins[i]).call();
       insurer = {...insurer, account: ins[i]};
       it = [...it, insurer]
     }
@@ -72,7 +72,7 @@ const Patient = ({mediChain, account, ethValue}) => {
       return;
     }
     try {
-      var policyList = await mediChain.methods.getInsurerPolicyList(buyFromInsurer).call()
+      var policyList = await mediWox.methods.getInsurerPolicyList(buyFromInsurer).call()
       setPolicyList(policyList);
     } catch (error) {
       console.error("Error fetching policy list:", error);
@@ -84,43 +84,46 @@ const Patient = ({mediChain, account, ethValue}) => {
   const purchasePolicy = async (e) => {
     e.preventDefault();
     var value = policyList[buyPolicyIndex].premium/ethValue;
-    mediChain.methods.buyPolicy(parseInt(policyList[buyPolicyIndex].id)).send({from: account, value: Web3.utils.toWei(value.toString(), 'Ether')}).on('transactionHash', (hash) => {
+    mediWox.methods.buyPolicy(parseInt(policyList[buyPolicyIndex].id)).send({from: account, value: Web3.utils.toWei(value.toString(), 'Ether')}).on('transactionHash', (hash) => {
       return window.location.href = '/login'
     })
   }
 
   const getTransactionsList = async () => {
-    var transactionsIdList = await mediChain.methods.getPatientTransactions(account).call();
+    try {
+      console.log("Fetching transactions for account:", account);
+    var transactionsIdList = await mediWox.methods.getPatientTransactions(account).call();
 
-    // console.log("Transactions ID list:", transactionsIdList);
+    console.log("Transactions ID list:", transactionsIdList);
 
     let tr = [];
     for(let i=transactionsIdList.length-1; i>=0; i--){
-        let transaction = await mediChain.methods.transactions(transactionsIdList[i]).call();
-        console.log("Transaction:", transaction);
+        let transaction = await mediWox.methods.transactions(transactionsIdList[i]).call();
+        console.log("Transaction details:", transaction);
 
-        let doctor = await mediChain.methods.doctorInfo(transaction.receiver).call();
+        let doctor = await mediWox.methods.doctorInfo(transaction.receiver).call();
 
         console.log("Doctor:", doctor);
         transaction = {...transaction, id: transactionsIdList[i], doctorEmail: doctor.email}
         tr = [...tr, transaction];
     }
 
-    // console.log("Transactions list:", tr);
-
+    console.log("Final transactions list:", tr);
     setTransactionsList(tr);
+  }catch (error) {
+    console.error("Error loading transactions:", error);
+}
   }
-
   // console.log("Transactions list123:", transactionsList);
   // const getTransactionsList = async () => {
   //   console.log("Fetching transactions...");
-  //   var transactionsIdList = await mediChain.methods.getPatientTransactions(account).call();
+  //   var transactionsIdList = await mediWox.methods.getPatientTransactions(account).call();
   //   console.log("Transaction IDs:", transactionsIdList);
   //   let tr = [];
   //   for(let i=transactionsIdList.length-1; i>=0; i--){
-  //     let transaction = await mediChain.methods.transactions(transactionsIdList[i]).call();
+  //     let transaction = await mediWox.methods.transactions(transactionsIdList[i]).call();
   //     console.log("Transaction details:", transaction);
-  //     let doctor = await mediChain.methods.doctorInfo(transaction.receiver).call();
+  //     let doctor = await mediWox.methods.doctorInfo(transaction.receiver).call();
   //     transaction = {...transaction, id: transactionsIdList[i], doctorEmail: doctor.email}
   //     tr = [...tr, transaction];
   //   }
@@ -131,7 +134,8 @@ const Patient = ({mediChain, account, ethValue}) => {
 
   const settlePayment = async (e, transaction) => {
     let value = transaction.value/ethValue;
-      mediChain.methods.settleTransactionsByPatient(transaction.id).send({from: account, value: Web3.utils.toWei(value.toString(), 'Ether')}).on('transactionHash', (hash) => {
+    value = parseFloat(value.toFixed(18));
+      mediWox.methods.settleTransactionsByPatient(transaction.id).send({from: account, value: Web3.utils.toWei(value.toString(), 'Ether')}).on('transactionHash', (hash) => {
         return window.location.href = '/login'
     })
   }
@@ -149,14 +153,18 @@ const Patient = ({mediChain, account, ethValue}) => {
   
  
   useEffect(() => {
+    const fetchData = async () => {
     if(account === "") return window.location.href = '/login'
     if(!patient) getPatientData()
     if(docList.length === 0) getDoctorAccessList();
     if(patient?.policyActive) getInsurer();
     if(insurerList.length === 0) getInsurerList();
     if(buyFromInsurer && buyFromInsurer !== "Choose") getPolicyList();
-    if(transactionsList.length === 0) getTransactionsList();
-  }, [patient, docList, insurerList, buyFromInsurer, transactionsList])
+    await getTransactionsList(); // Remove length check to always fetch
+    //if(transactionsList.length === 0) getTransactionsList();
+  }
+  fetchData();
+  }, [patient, docList, insurerList, buyFromInsurer])
 
   // console.log("Current transactionsList:", transactionsList);
   // console.log("Current patient:", docList);
