@@ -1,12 +1,9 @@
 <p align="center">
-  <h1 align="center"><a href="https://mediwox.biz/" target="_blank">MediWox</a></h1>
+  <h1 align="center"><a href="https://mediwox.netlify.app/" target="_blank">MediWox</a></h1>
   <p align="center">
     Revolutionizing healthcare data management: blockchain-based medical record storage for patients and insurance companies
 
-    https://github.com/samWoxsen/Mediwox/assets/YOUR_USER_ID/MediWox_blockchain_based_Medical_record.mp4
-
-
-  <!-- https://user-images.githubusercontent.com/66792720/232314462-c424ec69-5868-4194-9311-9d9ab89e18fe.mp4 -->
+    https://projects.aircwou.in/vid/MediWox.mp4
   </p>
 </p>
 
