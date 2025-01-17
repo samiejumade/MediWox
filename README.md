@@ -50,7 +50,7 @@ Our project MediWox seeks to address these challenges by leveraging the power of
 
 ## 🛠️ Built With
 
-![img1](https://user-images.githubusercontent.com/66792720/232314435-eaf54582-deb5-4970-ab55-2d9bf8976020.jpeg)
+![img1](https://github.com/samiejumade/MediWox/issues/1#issue-2794591633)
 Following technologies and libraries are used for the development of this project.
 
 - [React](https://reactjs.org/)
